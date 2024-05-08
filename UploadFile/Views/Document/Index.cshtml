@@ -1,0 +1,22 @@
+﻿@* Upload.cshtml *@
+@using (Html.BeginForm("Upload", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="file" name="file" />
+    <input type="submit" value="Upload" />
+    @Html.ValidationMessage("file")
+}
+
+@* Index.cshtml *@
+@foreach (var document in (IEnumerable<Document>)Model)
+{
+    <div>
+        @Html.ActionLink(document.FileName, "Download", new { id = document.Id })
+    </div>
+    <div>
+        <p>@document.FileName</p>
+        <form asp-action="Delete" asp-route-id="@document.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this file?');">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+} 
